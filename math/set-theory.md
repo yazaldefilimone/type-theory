@@ -17,12 +17,11 @@ E = {x | x ∈ N, 1 ≤ x ≤ 5} -- conjunto de numeros naturais menores ou igua
 -- o simbolo | eh lido como "tal que"
 --  e o simbolo ∈ eh lido como "pertence a" tambem pode ser lido como "esta em"
 -- o simbolo ∈ tem o oposto que eh ∉ que eh lido como "nao pertence a" ou "nao esta em"
-```
 
 
-2. Conjuntos unitarios, universais e vazios
 
-```agda
+-- 2. Conjuntos unitarios, universais e vazios
+
 
 P = {x | x e um n primo e par}  --  P = {2}
 
