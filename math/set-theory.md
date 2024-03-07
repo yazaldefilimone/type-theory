@@ -140,4 +140,18 @@ A' = U - A -- complemento de A
 B' = U - B -- complemento de B
 
 
+
+--- Alguns exercicios
+
+A = {1,2,3,4,8}
+B = {3,4,5,7}
+C = {6,7,8}
+
+
+1. A U B = {1,2,3,4,5,7,8}
+2. B ∩ C = {7}
+3. (A U B) - C = {1,2,3,4,5}
+4. (B ∩ C) - A = {7}
+5. A ∩ B ∩ C = ∅
+6. (A U B) ∩ (A U C) = {1,2,3,4,7,8}
 ```
