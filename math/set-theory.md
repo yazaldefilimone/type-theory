@@ -1,3 +1,5 @@
+<samp>
+
 Um conjunto pode ser entendido como uma colecao de coisas que compartilham uma caracteristica em comum. Por exemplo, o conjunto de todos os numeros naturais menores que 10, ou o conjunto de todas as pessoas que moram em uma cidade.
 
 
