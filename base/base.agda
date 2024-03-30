@@ -1,14 +1,12 @@
 module base.base where
   open import Data.Nat
-  -- change == to ===
   open import Data.Bool 
   open import Data.Product
   open import Relation.Binary.PropositionalEquality
   open import Data.List
   open import Data.String
-  open import Data.Vec
-  -- open import Data.Fin
-  
+  open import Data.Vec 
+   
   Nat = ℕ
   
   data List_Nat (A : Set) : Nat → Set where
@@ -111,21 +109,7 @@ module base.base where
   result_map_add : Nat
   result_map_add = map_add "nb" 20 _map -- resultado é 20
 
-
-
-
-
-
-
   -- -----------      lambda calculos      ------------
-
-  {- variables = x, y, z, ...
-    λ-abstraction = λx. M
-    application = M N
-  -}
-
-
-
   data Term : Set where
     var : Nat → Term
     abs : Term → Term
