@@ -4,8 +4,8 @@ module checker where
   open import Relation.Binary.PropositionalEquality
   open import Data.Product
   open import Data.Bool
-  -- τ
-  open import Data.Empty
+  open import Data.String
+  open import Data.Fin
 
   --  simple type checker for lambda calculus
 
@@ -41,6 +41,14 @@ module checker where
   data Type : Set where
     nat : Type
     _=>_ : Type -> Type -> Type
+  -- var : String -> Type ie. var "x" : Type in lc: λx.x
+  {-
+    λx.x : nat => nat
+    λx.λy.x : nat => nat => nat
+    λx.λy.x y : nat => nat => nat
+
+  
+  -}
 
   data Expr : Set where
     var : Nat -> Expr
@@ -52,22 +60,33 @@ module checker where
     cons : Type -> Context -> Context
 
   -- data check : Context -> Expr -> Type -> Set where
-  --   var : {Γ : Context} -> {x : Nat} -> check Γ (var x) nat
-  --   abs : {Γ : Context} -> {e : Expr} -> {τ1 τ2 : Type} -> check (cons τ1 Γ) e τ2 -> check Γ (abs e) (=> τ1 τ2)
-  --   app : {Γ : Context} -> {e1 e2 : Expr} -> {τ1 τ2 : Type} -> check Γ e1 (=> τ1 τ2) -> check Γ e2 τ1 -> check Γ (app e1 e2) τ2
-  
+  --  var : {Γ : Context} -> {x : Nat} -> check Γ (var x) nat
+  --  abs : {Γ : Context} -> {e : Expr} -> {τ1 τ2 : Type} -> check (cons τ1 Γ) e τ2 -> check Γ (abs e) (=> τ1 τ2)
+  --  app : {Γ : Context} -> {e1 e2 : Expr} -> {τ1 τ2 : Type} -> check Γ e1 (=> τ1 τ2) -> check Γ e2 τ1 -> check Γ (app e1 e2) τ2
+
   -- data check : Context → Expr → Type → Set where
-  --   var : (Γ : Context) → (x : Nat) → check Γ (var x) nat
-  --   abs : (Γ : Context) → (e : Expr) → (τ1 τ2 : Type) → check (cons τ1 Γ) e τ2 → check Γ (abs e) (=> τ1 τ2)
-  --   app : (Γ : Context) → (e1 e2 : Expr) → (τ1 τ2 : Type) → check Γ e1 (=> τ1 τ2) → check Γ e2 τ1 → check Γ (app e1 e2) τ2
+  --  var : (Γ : Context) → (x : Nat) → check Γ (var x) nat
+  --  abs : (Γ : Context) → (e : Expr) → (τ1 τ2 : Type) → check (cons τ1 Γ) e τ2 → check Γ (abs e) (=> τ1 τ2)
+  --  app : (Γ : Context) → (e1 e2 : Expr) → (τ1 τ2 : Type) → check Γ e1 (=> τ1 τ2) → check Γ e2 τ1 → check Γ (app e1 e2) τ2
 
   data check : Context → Expr → Type → Set where
     var : {Γ : Context} -> {x : Nat} -> check Γ (var x) nat
     abs : {Γ : Context} -> {e : Expr} -> {τ1 τ2 : Type} -> check (cons τ1 Γ) e τ2 -> check Γ (abs e) (τ1 => τ2)
     app : {Γ : Context} -> {e1 e2 : Expr} -> {τ1 τ2 : Type} -> check Γ e1 (τ1 => τ2) -> check Γ e2 τ1 -> check Γ (app e1 e2) τ2
--- -------------- teste --------------
+
+
+  -- ---------- teste lambda ----------
   var_test : check (cons nat empty) (var 0) nat 
   var_test = var
 
   abs_test : check empty (abs (var 0)) (nat => nat)
-  abs_test = abs var_test
+  abs_test = abs var
+
+  app_test : check empty (app (abs (var 0)) (var 0)) nat
+  app_test = app (abs var) var
+
+  -- ----- normalize ----- ,
+  rename_free_vars : (e : Expr) -> (x : Nat) -> (y : Nat) -> Expr
+  rename_free_vars (var x) y z = if x == z then var y else var x
+  rename_free_vars (abs e) y z = abs (rename_free_vars e y z)
+  rename_free_vars (app e1 e2) y z = app (rename_free_vars e1 y z) (rename_free_vars e2 y z)
