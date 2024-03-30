@@ -103,12 +103,9 @@ module base.base where
 
   -- função que adiciona uma chave e um valor em um mapa e retorna zero
   map_add : String → Nat → _Map → Nat -- função que adiciona uma chave e um valor em um mapa e retorna zero
-  map_add key value map = zero
-  map_add key value (fn_add current_key current_value rest_map) = map_add key value rest_map
+  map_add key value empty = zero
+  map_add key value (fn_add current_key current_value rest_map) = if key == current_key then value else map_add key value rest_map
 
   -- exemplo de uso da função map_add
   result_map_add : Nat
   result_map_add = map_add "nb" 20 _map -- resultado é 20
-
-
-  
