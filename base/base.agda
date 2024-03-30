@@ -1,6 +1,7 @@
 module base.base where
   open import Data.Nat
-  open import Data.Bool
+  -- change == to ===
+  open import Data.Bool 
   open import Data.Product
   open import Relation.Binary.PropositionalEquality
   open import Data.List
@@ -109,3 +110,37 @@ module base.base where
   -- exemplo de uso da função map_add
   result_map_add : Nat
   result_map_add = map_add "nb" 20 _map -- resultado é 20
+
+
+
+
+
+
+
+  -- -----------      lambda calculos      ------------
+
+  {- variables = x, y, z, ...
+    λ-abstraction = λx. M
+    application = M N
+  -}
+
+
+
+  data Term : Set where
+    var : Nat → Term
+    abs : Term → Term
+    app : Term → Term → Term
+
+  -- free variables
+  free_var : Term → List Nat
+  free_var (var x) = x ∷ []    -- variavel livre de uma variavel é ela mesma
+  free_var (abs t) = free_var t -- variavel livre de uma abstração é a variavel livre do termo
+  free_var (app t1 t2) = free_var t1 Data.List.++ free_var t2 -- variavel livre de uma aplicação é a união das variaveis livres dos termos
+
+  get_value_var : Term → Nat
+  get_value_var (var x) = x
+  -- substitution
+  _subst : Nat → Term → Term → Term
+  _subst x s (var y) = if get_value_var x == get_value_var y then s else var y -- [x := s]x = s
+  _subst x s (abs t) = abs (_subst x s t)         -- [x := s](λy. t) = λy. [x := s]t
+  _subst x s (app t1 t2) = app (_subst x s t1) (_subst x s t2) -- [x := s](t1 t2) = ([x := s]t1 [x := s]t2)
