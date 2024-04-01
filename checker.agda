@@ -1,4 +1,4 @@
-module test2 where
+module checker where
   open import Data.Nat
   open import Relation.Binary.PropositionalEquality
   open import Data.Fin hiding (_+_)
