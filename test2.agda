@@ -1,4 +1,4 @@
-module note_checker where
+module test2 where
   open import Data.Nat
   open import Data.List
   open import Relation.Binary.PropositionalEquality
